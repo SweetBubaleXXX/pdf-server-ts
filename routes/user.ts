@@ -4,33 +4,36 @@ import { User, UserCreationAttributes, UserUpdateAttributes } from "../models/us
 
 interface UserParams { id: number };
 
-const router = Router();
+export const router = Router();
+
+router.post('/', async (req: Request<{}, {}, UserCreationAttributes>, res: Response) => {
+    const user = await User.create(req.body);
+    res.send(user);
+})
 
 router.route('/:id')
-    .get(async (req: Request<UserParams, {}, string>, res: Response) => {
+    .get(async (req: Request<UserParams>, res: Response) => {
         const user = await User.findByPk(req.params.id);
         if (user)
             res.json(user);
         else
             res.sendStatus(StatusCodes.NOT_FOUND);
     })
-    .post(async (req: Request<UserParams, {}, UserCreationAttributes>, res: Response) => {
-        const user = await User.create(req.body);
-        res.send(user);
-    })
     .patch(async (req: Request<UserParams, {}, UserUpdateAttributes>, res: Response) => {
         await User.update(req.body, {
             where: {
-                email: req.body.id,
+                id: req.params.id,
             },
         });
+        res.sendStatus(StatusCodes.OK);
     })
-    .delete(async (req: Request, res: Response) => {
+    .delete(async (req: Request<UserParams>, res: Response) => {
         await User.destroy({
             where: {
                 id: req.params.id,
             },
         });
+        res.sendStatus(StatusCodes.OK);
     });
 
 router.post('/pdf');

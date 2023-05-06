@@ -14,7 +14,10 @@ export type UserCreationAttributes = Optional<UserAttributes, 'id' | 'image' | '
 
 export type UserUpdateAttributes = Optional<UserAttributes, keyof Omit<UserAttributes, 'id'>>;
 
-@Table({ tableName: 'user' })
+@Table({
+    tableName: 'user',
+    timestamps: false,
+})
 export class User extends Model<UserAttributes, UserCreationAttributes> {
     @PrimaryKey
     @AutoIncrement
@@ -22,6 +25,7 @@ export class User extends Model<UserAttributes, UserCreationAttributes> {
     id!: number;
 
     @Unique
+    @AllowNull(false)
     @Column
     email!: string;
 
@@ -33,9 +37,9 @@ export class User extends Model<UserAttributes, UserCreationAttributes> {
     @Column
     lastName!: string;
 
-    @Column
-    image!: string;
+    @Column(DataType.STRING)
+    image?: string | null;
 
     @Column(DataType.BLOB)
-    pdf!: Buffer;
+    pdf?: Buffer | null;
 };
