@@ -1,11 +1,14 @@
-import express from 'express';
-import dotenv from 'dotenv';
+import 'dotenv/config';
 
-dotenv.config();
+import express from 'express';
+import sequelize from './db';
 
 const app = express();
 const PORT = +(process.env.PORT || 3000);
 
-app.listen(PORT, () => {
-    console.log(`Running on port ${PORT}`);
+sequelize.authenticate().then(async () => {
+    await sequelize.sync();
+    app.listen(PORT, () => {
+        console.log(`Running on port ${PORT}`);
+    });
 });
