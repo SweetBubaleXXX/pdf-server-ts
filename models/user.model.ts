@@ -1,5 +1,6 @@
 import { Optional } from 'sequelize';
 import { Table, Model, Column, DataType, AllowNull, PrimaryKey, Unique, AutoIncrement } from 'sequelize-typescript';
+import { encodedImageLengthLimit } from '../config/image.config';
 
 export type UserAttributes = {
   id: number,
@@ -37,7 +38,7 @@ export class User extends Model<UserAttributes, UserCreationAttributes> {
   @Column
   lastName!: string;
 
-  @Column(DataType.STRING)
+  @Column(DataType.STRING(encodedImageLengthLimit))
   image?: string | null;
 
   @Column(DataType.BLOB)

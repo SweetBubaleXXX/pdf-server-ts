@@ -1,30 +1,27 @@
-import { Router, Request, Response, NextFunction, json } from 'express';
-import { StatusCodes } from 'http-status-codes';
-import { User } from '../models/user.model';
-import errorHandler from '../middlewares/error.handler';
+import { Router, json, raw } from 'express';
+import parseUser from '../middlewares/user.params';
 import userController from '../controllers/user.controller';
+import imageController from '../controllers/image.controller';
+import { imageSizeLimit } from '../config/image.config';
 
-export const router = Router();
+const router = Router();
 
 router.use(json());
 
-router.post('/pdf');
-
-router.post('/image')
-
 router.post('/', userController.create);
 
-router.param('id', async (req: Request<{ user?: User }>, res: Response, next: NextFunction, id: number) => {
-  const user = await User.findByPk(id);
-  if (!user)
-    return res.sendStatus(StatusCodes.NOT_FOUND);
-  req.params.user = user;
-  next();
-});
+router.param('id', parseUser);
 
 router.route('/:id')
   .get(userController.get)
   .patch(userController.update)
   .delete(userController.delete);
 
-router.use(errorHandler);
+router.post('/:id/image', raw({
+  type: '*/*',
+  limit: imageSizeLimit,
+}), imageController.upload);
+
+router.post('/:id/pdf');
+
+export default router;

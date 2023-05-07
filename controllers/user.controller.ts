@@ -1,8 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import { User, UserCreationAttributes, UserUpdateAttributes } from '../models/user.model';
-
-interface UserParams { user: User };
+import { UserParams } from '../middlewares/user.params';
 
 export default {
   create: async (req: Request<{}, {}, UserCreationAttributes>, res: Response, next: NextFunction) => {
@@ -13,12 +12,12 @@ export default {
         lastName: req.body.lastName,
       });
       res.send(user);
-    } catch (err) {
-      next(err);
-    }
+    } catch (err) { next(err) }
   },
-  get: async (req: Request<UserParams>, res: Response) => {
-    res.json(req.params.user);
+  get: async (req: Request<UserParams>, res: Response, next: NextFunction) => {
+    try {
+      res.json(req.params.user);
+    } catch (err) { next(err) }
   },
   update: async (req: Request<UserParams, {}, UserUpdateAttributes>, res: Response, next: NextFunction) => {
     try {
@@ -29,12 +28,12 @@ export default {
         lastName: req.body.lastName,
       });
       res.json(user);
-    } catch (err) {
-      next(err);
-    }
+    } catch (err) { next(err) }
   },
-  delete: async (req: Request<UserParams>, res: Response) => {
-    await req.params.user.destroy();
-    res.sendStatus(StatusCodes.NO_CONTENT);
+  delete: async (req: Request<UserParams>, res: Response, next: NextFunction) => {
+    try {
+      await req.params.user.destroy();
+      res.sendStatus(StatusCodes.NO_CONTENT);
+    } catch (err) { next(err) }
   },
-}
+};
