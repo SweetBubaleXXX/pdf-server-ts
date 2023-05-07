@@ -1,17 +1,11 @@
-import 'dotenv/config';
+import sequelize from './config/db.config';
+import configureApp from './config/app.config';
 
-import express from 'express';
-import sequelize from './db';
-import { router as userRouter }  from './routes/user';
-
-const PORT = +(process.env.PORT || 3000);
-const app = express();
-
-app.use(userRouter);
+const app = configureApp();
 
 sequelize.authenticate().then(async () => {
-    await sequelize.sync();
-    app.listen(PORT, () => {
-        console.log(`Running on port ${PORT}`);
-    });
+  await sequelize.sync();
+  app.listen(() => {
+    console.log(`Running on port ${app.settings.port}`);
+  });
 });
