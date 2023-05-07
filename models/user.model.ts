@@ -1,19 +1,20 @@
 import { Optional } from 'sequelize';
 import { Table, Model, Column, DataType, AllowNull, PrimaryKey, Unique, AutoIncrement } from 'sequelize-typescript';
-import { encodedImageLengthLimit } from '../config/image.config';
 
 export type UserAttributes = {
   id: number,
   email: string,
   firstName: string,
   lastName: string,
-  image: string,
-  pdf: Buffer,
+  image: string | null,
+  pdf: Buffer | null,
 };
 
 export type UserCreationAttributes = Optional<UserAttributes, 'id' | 'image' | 'pdf'>;
 
 export type UserUpdateAttributes = Optional<UserAttributes, keyof Omit<UserAttributes, 'id'>>;
+
+export type UserPdfExportAttributes = Optional<Pick<UserAttributes, 'firstName' | 'lastName' | 'image'>, 'image'>
 
 @Table({
   tableName: 'user',
@@ -38,7 +39,7 @@ export class User extends Model<UserAttributes, UserCreationAttributes> {
   @Column
   lastName!: string;
 
-  @Column(DataType.STRING(encodedImageLengthLimit))
+  @Column(DataType.TEXT)
   image?: string | null;
 
   @Column(DataType.BLOB)

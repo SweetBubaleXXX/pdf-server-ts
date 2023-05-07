@@ -1,6 +1,6 @@
 import 'dotenv/config';
 import express from 'express';
-import userRouter from '../routes/user';
+import userRouter from '../routes/user.router';
 import errorHandler from '../middlewares/error.handler';
 
 export default () => {

@@ -1,2 +1,2 @@
-export const encodedImageLengthLimit = 10240;
-export const imageSizeLimit = Math.round(encodedImageLengthLimit * 2 / 3);
+export const encodedImageLengthLimit = 65535;
+export const imageSizeLimit = Math.round(encodedImageLengthLimit * 3 / 4) - 2;
