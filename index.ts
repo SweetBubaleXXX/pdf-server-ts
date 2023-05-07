@@ -5,7 +5,7 @@ const app = configureApp();
 
 sequelize.authenticate().then(async () => {
   await sequelize.sync();
-  app.listen(() => {
+  app.listen(app.settings.port, () => {
     console.log(`Running on port ${app.settings.port}`);
   });
 });

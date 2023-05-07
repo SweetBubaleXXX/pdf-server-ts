@@ -6,7 +6,7 @@ export default () => {
   const app = express();
   app.set('port', process.env.PORT || 3000);
 
-  app.use(userRouter);
+  app.use('/user', userRouter);
 
   return app;
 }; 

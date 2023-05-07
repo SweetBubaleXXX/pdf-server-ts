@@ -1,26 +1,18 @@
 import { Router, Request, Response, NextFunction, json } from 'express';
 import { StatusCodes } from 'http-status-codes';
-import { User, UserCreationAttributes, UserUpdateAttributes } from '../models/user.model';
+import { User } from '../models/user.model';
 import errorHandler from '../middlewares/error.handler';
-
-interface UserParams { user: User };
+import userController from '../controllers/user.controller';
 
 export const router = Router();
 
 router.use(json());
 
-router.post('/', async (req: Request<{}, {}, UserCreationAttributes>, res: Response, next: NextFunction) => {
-  try {
-    const user = await User.create({
-      email: req.body.email,
-      firstName: req.body.firstName,
-      lastName: req.body.lastName,
-    });
-    res.send(user);
-  } catch (err) {
-    next(err);
-  }
-});
+router.post('/pdf');
+
+router.post('/image')
+
+router.post('/', userController.create);
 
 router.param('id', async (req: Request<{ user?: User }>, res: Response, next: NextFunction, id: number) => {
   const user = await User.findByPk(id);
@@ -31,27 +23,8 @@ router.param('id', async (req: Request<{ user?: User }>, res: Response, next: Ne
 });
 
 router.route('/:id')
-  .get(async (req: Request<UserParams>, res: Response) => {
-    res.json(req.params.user);
-  })
-  .patch(async (req: Request<UserParams, {}, UserUpdateAttributes>, res: Response, next: NextFunction) => {
-    try {
-      const user = req.params.user;
-      await user.update({
-        email: req.body.email,
-        firstName: req.body.firstName,
-        lastName: req.body.lastName,
-      });
-      res.json(user);
-    } catch (err) {
-      next(err);
-    }
-  })
-  .delete(async (req: Request<UserParams>, res: Response) => {
-    await req.params.user.destroy();
-    res.sendStatus(StatusCodes.NO_CONTENT);
-  });
-
-router.post('/pdf');
+  .get(userController.get)
+  .patch(userController.update)
+  .delete(userController.delete);
 
 router.use(errorHandler);
