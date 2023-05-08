@@ -1,5 +1,5 @@
 import { Optional } from 'sequelize';
-import { Table, Model, Column, AllowNull, PrimaryKey, Unique, AutoIncrement } from 'sequelize-typescript';
+import { Table, Model, Column, AllowNull, PrimaryKey, Unique, AutoIncrement, IsEmail } from 'sequelize-typescript';
 
 export type AdminAttributes = {
   id: number,
@@ -18,6 +18,7 @@ export class Admin extends Model<AdminAttributes, AdminCreationAttributes> {
   @Column
   id!: number;
 
+  @IsEmail
   @Unique
   @AllowNull(false)
   @Column

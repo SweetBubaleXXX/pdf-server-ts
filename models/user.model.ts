@@ -1,5 +1,5 @@
 import { Optional } from 'sequelize';
-import { Table, Model, Column, DataType, AllowNull, PrimaryKey, Unique, AutoIncrement } from 'sequelize-typescript';
+import { Table, Model, Column, DataType, AllowNull, PrimaryKey, Unique, AutoIncrement, IsEmail } from 'sequelize-typescript';
 
 export type UserAttributes = {
   id: number,
@@ -26,6 +26,7 @@ export class User extends Model<UserAttributes, UserCreationAttributes> {
   @Column(DataType.INTEGER)
   id!: number;
 
+  @IsEmail
   @Unique
   @AllowNull(false)
   @Column
