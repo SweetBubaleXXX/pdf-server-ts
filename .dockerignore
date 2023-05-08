@@ -1,0 +1,13 @@
+Dockerfile
+docker*.yml
+
+.git*
+
+.vscode
+
+node_modules
+
+dist/
+
+LICENSE
+README.md

@@ -1,7 +1,6 @@
 {
   "name": "pdf-server-ts",
   "version": "0.1.0",
-  "description": "",
   "main": "index.js",
   "scripts": {
     "dev": "npx nodemon ./index.ts",
