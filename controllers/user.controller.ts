@@ -19,6 +19,14 @@ export default {
       res.json(req.params.user);
     } catch (err) { next(err) }
   },
+  list: async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const users = await User.findAll({
+        attributes: ['id', 'firstName', 'lastName'],
+      });
+      res.json(users);
+    } catch (err) { next(err) }
+  },
   update: async (req: Request<UserParams, {}, UserUpdateAttributes>, res: Response, next: NextFunction) => {
     try {
       const user = req.params.user;

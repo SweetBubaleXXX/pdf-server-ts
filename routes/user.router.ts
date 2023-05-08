@@ -11,6 +11,8 @@ router.use(json());
 
 router.post('/', userController.create);
 
+router.get('/all', userController.list);
+
 router.param('id', parseUser);
 
 router.route('/:id')

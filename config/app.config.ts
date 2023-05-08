@@ -11,7 +11,7 @@ export default () => {
 
   app.use('/admin', adminRouter);
   app.use(authMiddleware);
-  app.use('/user', userRouter);
+  app.use('/users', userRouter);
   app.use(errorHandler);
 
   return app;
