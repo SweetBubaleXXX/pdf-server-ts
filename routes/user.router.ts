@@ -9,8 +9,6 @@ const router = Router();
 
 router.use(json());
 
-router.post('/pdf', text({ type: '*/*' }), pdfController.generate);
-
 router.post('/', userController.create);
 
 router.param('id', parseUser);
@@ -24,5 +22,9 @@ router.post('/:id/image', raw({
   type: '*/*',
   limit: imageSizeLimit,
 }), imageController.upload);
+
+router.get('/:id/pdf', pdfController.download);
+
+router.post('/pdf', text({ type: '*/*' }), pdfController.generate);
 
 export default router;
