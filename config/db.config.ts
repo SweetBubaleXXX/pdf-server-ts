@@ -1,5 +1,6 @@
 import 'dotenv/config'
 import { Sequelize } from 'sequelize-typescript';
+import { Admin } from '../models/admin.model';
 import { User } from '../models/user.model';
 
 const sequelize = new Sequelize(
@@ -11,6 +12,6 @@ const sequelize = new Sequelize(
     dialect: 'mariadb',
   });
 
-sequelize.addModels([User]);
+sequelize.addModels([Admin, User]);
 
 export default sequelize;
